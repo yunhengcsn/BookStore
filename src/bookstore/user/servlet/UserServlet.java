@@ -6,9 +6,11 @@ import bookstore.user.service.UserService;
 import tools.commons.CommonUtils;
 import tools.servlet.BaseServlet;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,6 @@ import java.util.Map;
  * @BelongsProject: BookStore
  * @BelongsPackage: bookstore.user.servlet
  * @Author: csn
- * @CreateTime: 2019-05-23 15:10
  * @Description: web layer of user module
  */
 public class UserServlet extends BaseServlet {
@@ -99,13 +100,54 @@ public class UserServlet extends BaseServlet {
         return errors;
     }
 
-    public String ajaxValidateUsername() {
+    /*
+     * @Description: ajax校验用户名是否注册
+     * @Param: []
+     * @return java.lang.String
+     **/
+    public String ajaxValidateUsername(HttpServletRequest req, HttpServletResponse resp){
+        String username = req.getParameter("username");
+        boolean b = userService.validateUsername(username);
+        try {
+            resp.getWriter().print(b);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
-    public String ajaxValidateEmail() {
+    
+    /*
+     * @Description: ajax校验邮箱是否注册
+     * @Param: [req, resp]
+     * @return java.lang.String
+     **/
+    public String ajaxValidateEmail(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        /*
+         * 1. 获取Email
+         */
+        String email = req.getParameter("email");
+        /*
+         * 2. 通过service得到校验结果
+         */
+        boolean b = userService.validateEmail(email);
+        /*
+         * 3. 发给客户端
+         */
+        resp.getWriter().print(b);
         return null;
     }
-    public String ajaxValidateVerifyCode(){
+    
+    /*
+     * @Description: ajax校验验证码是否正确
+     * @Param: [req, resp]
+     * @return java.lang.String
+     **/
+    public String ajaxValidateVerifyCode(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String verifyCode = req.getParameter("verifyCode");
+        String vcCode = (String)req.getSession().getAttribute("verifyCode");
+        boolean b = verifyCode.equalsIgnoreCase(vcCode);
+        resp.getWriter().print(b);
         return null;
     }
 

@@ -4,7 +4,6 @@ package bookstore.user.domain;
  * @BelongsProject: BookStore
  * @BelongsPackage: bookstore.user.domain
  * @Author: csn
- * @CreateTime: 2019-05-23 15:11
  * @Description: model of user module
  */
 public class User {

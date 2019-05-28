@@ -20,13 +20,8 @@
 	<link rel="stylesheet" type="text/css" href="<c:url value='/jsps/css/user/regist.css'/>">
 
 	<script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/jsps/js/user/regist.js'/>"></script>
 
-
-    <script type="text/javascript">
-      function vcChange() {
-        $("#verifyCodeImg").attr("src","${pageContext.request.contextPath}/vcServlet?a="+new Date());
-      }
-    </script>
   </head>
   
   <body>
@@ -35,7 +30,7 @@
     <span class="spanTitle">网上书城新用户注册</span>
   </div>
   <div class="divCenter">
-    <form action="<c:url value='/UserServlet'/>" method="post">
+    <form action="<c:url value='/UserServlet'/>" method="post" id="registForm">
     <input type="hidden" name="method" value="regist"/>
     <table>
       <tr>
@@ -92,7 +87,7 @@
       </tr>
       <tr>
         <td>&nbsp;</td>
-        <td>
+        <td class="submitBtn">
           <input type="image" src="<c:url value='/images/regist1.jpg'/>" id="submit"/>
         </td>
         <td>&nbsp;</td>
