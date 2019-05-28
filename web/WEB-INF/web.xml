@@ -11,6 +11,10 @@
         <servlet-name>VerifyCodeServlet</servlet-name>
         <servlet-class>tools.verifycode.VerifyCodeServlet</servlet-class>
     </servlet>
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>tools.filter.EncodingFilter</filter-class>
+    </filter>
 
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
@@ -20,4 +24,8 @@
         <servlet-name>VerifyCodeServlet</servlet-name>
         <url-pattern>/vcServlet</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
