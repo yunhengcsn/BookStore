@@ -9,12 +9,12 @@ $(function() {
 	/*
 	 * 2. 切换注册按钮的图片
 	 */
-	$("#submitBtn").hover(
+	$("#submit").hover(
 		function() {
-			$("#submitBtn").attr("src", "${pageContext.request.contextPath}/images/regist2.jpg");
+			$("#submit").attr("src", "/BookStore_war_exploded/images/regist2.jpg");
 		},
 		function() {
-			$("#submitBtn").attr("src", "${pageContext.request.contextPath}/images/regist1.jpg");
+			$("#submit").attr("src", "/BookStore_war_exploded/images/regist1.jpg");
 		}
 	);
 	
@@ -87,7 +87,7 @@ function validateUsername() {
 	$.ajax({
 		url:"/BookStore_war_exploded/UserServlet",//要请求的servlet
 		data:{method:"ajaxValidateUsername", username:value},//给服务器的参数
-		type:"POST",
+		type:"post",
 		dataType:"json",
 		async:false,//是否异步请求，如果是异步，那么不会等服务器返回，我们这个函数就向下运行了。
 		cache:false,

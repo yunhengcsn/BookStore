@@ -105,7 +105,7 @@ public class UserServlet extends BaseServlet {
      * @Param: []
      * @return java.lang.String
      **/
-    public String ajaxValidateUsername(HttpServletRequest req, HttpServletResponse resp){
+    public String ajaxValidateUsername(HttpServletRequest req, HttpServletResponse resp) {
         String username = req.getParameter("username");
         boolean b = userService.validateUsername(username);
         try {
@@ -115,7 +115,7 @@ public class UserServlet extends BaseServlet {
         }
         return null;
     }
-    
+
     /*
      * @Description: ajax校验邮箱是否注册
      * @Param: [req, resp]

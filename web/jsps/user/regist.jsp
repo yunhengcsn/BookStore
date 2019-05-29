@@ -87,7 +87,7 @@
       </tr>
       <tr>
         <td>&nbsp;</td>
-        <td class="submitBtn">
+        <td>
           <input type="image" src="<c:url value='/images/regist1.jpg'/>" id="submit"/>
         </td>
         <td>&nbsp;</td>
