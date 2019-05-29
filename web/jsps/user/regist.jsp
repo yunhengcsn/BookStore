@@ -6,7 +6,7 @@
 <html>
   <head>
     
-    <title>注册</title>
+    <title>网上书城新用户注册</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

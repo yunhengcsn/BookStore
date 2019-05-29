@@ -46,7 +46,7 @@ public class UserService {
 
         Mail mail = new Mail(props.getProperty("from"),form.getEmail());
         mail.setSubject(props.getProperty("subject"));
-    String content = MessageFormat.format(props.getProperty("content"), form.getActivationCode());//将{0}用form.getActivationCode()替换
+        String content = MessageFormat.format(props.getProperty("content"), form.getActivationCode());//将{0}用form.getActivationCode()替换
         mail.setContent(content);
 
         Session s = MailUtils.createSession(props.getProperty("host"),props.getProperty("username"),props.getProperty("password"));
@@ -92,6 +92,18 @@ public class UserService {
         } else {
             user.setStatus(true);
             userDao.updateStatus(user.getUid(), user.getStatus());
+        }
+    }
+
+    /**
+     * @Description: user login
+     * @Param: [form]
+     * @return void
+     **/
+    public void login(User form) throws UserException {
+        User user = userDao.findByUsername(form.getUsername());
+        if(user == null || !form.getPassword().equals(user.getPassword())) {
+            throw new UserException("用户名或密码错误！");
         }
     }
 }

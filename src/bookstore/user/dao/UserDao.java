@@ -105,4 +105,23 @@ public class UserDao {
         }
 
     }
+
+    /**
+     * @Description: find user by username
+     * @Param: [username]
+     * @return bookstore.user.domain.User
+     **/
+    public User findByUsername(String username) {
+        String sql = "select * from user where username=?";
+        Object[] param = {username};
+        User user = null;
+
+        try {
+            user = qr.query(sql,new BeanHandler<>(User.class), param);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("按用户名查询用户失败");
+        }
+        return user;
+    }
 }

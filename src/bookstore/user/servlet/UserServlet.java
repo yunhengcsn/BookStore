@@ -172,4 +172,72 @@ public class UserServlet extends BaseServlet {
         }
         return "f:/jsps/msg.jsp";
     }
+
+    /*
+     * @Description: user login
+     * @Param: [req, resp]
+     * @return java.lang.String
+     **/
+    public String login(HttpServletRequest req, HttpServletResponse resp) {
+        User form = CommonUtils.toBean(req.getParameterMap(),User.class);
+        //check form data
+        Map<String,String> errors = validateLogin(form,req.getSession());
+
+        //表单校验不通过
+        if(errors.size() != 0) {
+            req.setAttribute("errors",errors);
+            req.setAttribute("form",form);
+            return "f:/jsps/user/login.jsp";
+        }
+
+        try {
+            userService.login(form);
+            //登录成功后向session存储用户名信息
+            req.getSession().setAttribute("username",form.getUsername());
+        } catch (UserException e) {
+            //登录失败
+            errors.put("submitError",e.getMessage());
+            req.setAttribute("errors",errors);
+            req.setAttribute("form",form);
+            return "f:/jsps/user/login.jsp";
+        }
+
+        return "f:/index.jsp";
+    }
+
+    /*
+     * @Description: check whether form is valid
+     * @Param: [form, session]
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     **/
+    private Map<String, String> validateLogin(User form, HttpSession session) {
+        String username = form.getUsername();
+        String password = form.getPassword();
+        String verifyCode = form.getVerifyCode();
+
+        Map<String,String> errors = new HashMap<>();
+
+        //check password
+        if(password == null || password.trim().isEmpty()) {
+            errors.put("passwordError","密码不能为空");
+        } else if(password.length() < 3 || password.length() > 15) {
+            errors.put("passwordError","密码长度必须在3到15之间");
+        }
+
+        //check username
+        if(username == null || username.trim().isEmpty()) {
+            errors.put("usernameError","用户名不能为空");
+        } else if (username.length() < 3 || username.length() > 15) {
+            errors.put("usernameError","用户名长度必须在3到15之间");
+        }
+
+        //check verifyCode
+        if(verifyCode == null || verifyCode.trim().isEmpty()) {
+            errors.put("verifyCodeError","验证码不能为空");
+        }else if (! verifyCode.equals(session.getAttribute("verifyCode"))) {
+            errors.put("verifyCodeError","验证码输入错误");
+        }
+
+        return errors;
+    }
 }
