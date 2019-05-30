@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
@@ -35,19 +35,22 @@
   </head>
   
   <body>
-<h1 style="text-align: center;">网上书城</h1>
-<div style="font-size: 10pt; line-height: 10px;">
-		  <a href="<c:url value='/jsps/user/regist.jsp'/>" target="_parent">注册</a>
+	<h1 style="text-align: center;">网上书城</h1>
+	<div style="font-size: 10pt; line-height: 10px;">
+			<c:if test="${empty sessionScope.username}">
+				<a href="<c:url value='/jsps/user/regist.jsp'/>" target="_parent">新用户注册</a>
+			</c:if>
 			你好，
 			<c:choose>
 				<c:when test="${empty sessionScope.username}"><a href="<c:url value='/jsps/user/login.jsp'/>" target="_parent">请登录</a></c:when>
 				<c:otherwise>${sessionScope.username}</c:otherwise>
 			</c:choose>
-		  <a href="<c:url value='/jsps/cart/list.jsp'/>" target="body">我的购物车</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		  <a href="<c:url value='/jsps/order/list.jsp'/>" target="body">我的订单</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		  <a href="<c:url value='/jsps/user/pwd.jsp'/>" target="body">修改密码</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		  <a href="<c:url value='/jsps/user/login.jsp'/>" target="_parent">退出</a>	
-
-</div>
+			<c:if test="${not empty sessionScope.username}">
+				<a href="<c:url value='/jsps/cart/list.jsp'/>" target="body">我的购物车</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+				<a href="<c:url value='/jsps/order/list.jsp'/>" target="body">我的订单</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+				<a href="<c:url value='/jsps/user/pwd.jsp'/>" target="body">修改密码</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+				<a href="<c:url value='/UserServlet?method=exit'/>" target="_parent">退出</a>
+			</c:if>
+	</div>
   </body>
 </html>

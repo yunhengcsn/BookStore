@@ -49,7 +49,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="tdLabel">密   码：</td>
+                      <td class="tdLabel">密&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
                       <td class="tdInput">
                         <input type="password" name="password" id="password" class="input" value="${form.password}"/>
                       </td>

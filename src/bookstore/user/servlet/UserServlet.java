@@ -121,8 +121,7 @@ public class UserServlet extends BaseServlet {
      * @Param: [req, resp]
      * @return java.lang.String
      **/
-    public String ajaxValidateEmail(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    public String ajaxValidateEmail(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         /*
          * 1. 获取Email
          */
@@ -239,5 +238,15 @@ public class UserServlet extends BaseServlet {
         }
 
         return errors;
+    }
+
+   /*
+    * @Description: user exit
+    * @Param: [req, resp]
+    * @return java.lang.String
+    **/
+    public String exit(HttpServletRequest req, HttpServletResponse resp) {
+        req.getSession().removeAttribute("username");
+        return "f:/jsps/user/login.jsp";
     }
 }
