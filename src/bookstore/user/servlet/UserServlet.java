@@ -7,10 +7,13 @@ import tools.commons.CommonUtils;
 import tools.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -177,7 +180,7 @@ public class UserServlet extends BaseServlet {
      * @Param: [req, resp]
      * @return java.lang.String
      **/
-    public String login(HttpServletRequest req, HttpServletResponse resp) {
+    public String login(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
         User form = CommonUtils.toBean(req.getParameterMap(),User.class);
         //check form data
         Map<String,String> errors = validateLogin(form,req.getSession());
@@ -189,19 +192,29 @@ public class UserServlet extends BaseServlet {
             return "f:/jsps/user/login.jsp";
         }
 
-        try {
-            userService.login(form);
-            //登录成功后向session存储用户名信息
-            req.getSession().setAttribute("username",form.getUsername());
-        } catch (UserException e) {
-            //登录失败
-            errors.put("submitError",e.getMessage());
-            req.setAttribute("errors",errors);
+        User user = userService.login(form);
+
+        if(user == null) {
+            req.setAttribute("submitError","用户名或密码错误");
+            req.setAttribute("form",form);
+            return "f:/jsps/user/login.jsp";
+        } else if(!user.getStatus()) {
+            req.setAttribute("submitError","您还没有激活！");
             req.setAttribute("form",form);
             return "f:/jsps/user/login.jsp";
         }
 
-        return "f:/index.jsp";
+        //登录成功后向session存储用户信息
+        req.getSession().setAttribute("sessionUser",user);
+
+        //将用户名保存至cookie
+        String username = user.getUsername();
+        username = URLEncoder.encode(username,"utf-8");
+        Cookie cookie = new Cookie("username",username);
+        cookie.setMaxAge(60 * 60 * 24 * 10);
+        resp.addCookie(cookie);
+
+        return "r:/index.jsp";
     }
 
     /*
@@ -246,7 +259,92 @@ public class UserServlet extends BaseServlet {
     * @return java.lang.String
     **/
     public String exit(HttpServletRequest req, HttpServletResponse resp) {
-        req.getSession().removeAttribute("username");
-        return "f:/jsps/user/login.jsp";
+        req.getSession().invalidate();
+        return "r:/jsps/user/login.jsp";
+    }
+
+    /*
+     * @Description: change password
+     * @Param: [req, resp]
+     * @return java.lang.String
+     **/
+    public String changePassword(HttpServletRequest req, HttpServletResponse resp) {
+        User form = CommonUtils.toBean(req.getParameterMap(),User.class);
+
+        //若用户未登录
+        User sessionUser = (User)req.getSession().getAttribute("sessionUser");
+        if(sessionUser == null) {
+            req.setAttribute("msg","您还没有登录<br><a href=\"/BookStore_war_exploded/jsps/user/login.jsp\">点击登录</a>");
+            req.setAttribute("code","error");
+            return "f:/jsps/msg.jsp";
+
+        }
+
+        //校验表单
+        Map<String,String> errors = validateChangePassword(form,req.getSession());
+        if(errors.size() != 0) {
+            req.setAttribute("errors",errors);
+            req.setAttribute("form",form);
+            return "f:/jsps/user/pwd.jsp";
+        }
+
+        //调用service方法
+        userService.changePassword(sessionUser.getUid(),form.getNewpassword());
+
+        req.getSession().invalidate();
+        req.setAttribute("msg","密码修改成功！<br><a href=\"/BookStore_war_exploded/jsps/user/login.jsp\">点击登录</a>");
+        req.setAttribute("code","success");
+        return "f:/jsps/msg.jsp";
+    }
+
+    /*
+     * @Description: check form
+     * @Param: [form, session]
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     **/
+    private Map<String, String> validateChangePassword(User form, HttpSession session) {
+        String password = form.getPassword();
+        String newpassword = form.getNewpassword();
+        String repassword = form.getRepassword();
+        String verifyCode = form.getVerifyCode();
+
+        Map<String,String> errors = new HashMap<>();
+
+        User sessionUser = (User)session.getAttribute("sessionUser");
+        String sessionPassword = sessionUser.getPassword();
+
+        //check old password
+        if(password == null || password.trim().isEmpty()) {
+            errors.put("passwordError","原密码不能为空");
+        } else if(password.length() < 3 || password.length() > 15) {
+            errors.put("passwordError","原密码长度必须在3到15之间");
+        }
+        //check whether old password is right
+        else if(!password.equals(sessionPassword)) {
+            errors.put("passwordError","原密码错误");
+        }
+
+        //check new password
+        if(newpassword == null || newpassword.trim().isEmpty()) {
+            errors.put("newpasswordError","新密码不能为空");
+        } else if(newpassword.length() < 3 || newpassword.length() > 15) {
+            errors.put("newpasswordError","新密码长度必须在3到15之间");
+        }
+
+        //check repassword
+        if(repassword == null || repassword.trim().isEmpty()) {
+            errors.put("repasswordError","校验密码不能为空");
+        } else if(!repassword.equals(newpassword)) {
+            errors.put("repasswordError","2次密码输入不一致");
+        }
+
+        //check verifyCode
+        if(verifyCode == null || verifyCode.trim().isEmpty()) {
+            errors.put("verifyCodeError","验证码不能为空");
+        }else if (! verifyCode.equals(session.getAttribute("verifyCode"))) {
+            errors.put("verifyCodeError","验证码输入错误");
+        }
+
+        return errors;
     }
 }

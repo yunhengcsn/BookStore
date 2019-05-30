@@ -100,10 +100,16 @@ public class UserService {
      * @Param: [form]
      * @return void
      **/
-    public void login(User form) throws UserException {
-        User user = userDao.findByUsername(form.getUsername());
-        if(user == null || !form.getPassword().equals(user.getPassword())) {
-            throw new UserException("用户名或密码错误！");
-        }
+    public User login(User form){
+        return userDao.findByUsernameAndPassword(form.getUsername(),form.getPassword());
+    }
+
+    /*
+     * @Description: change password
+     * @Param: [uid, newpassword]
+     * @return void
+     **/
+    public void changePassword(String uid, String newpassword) {
+        userDao.changePassword(uid,newpassword);
     }
 }

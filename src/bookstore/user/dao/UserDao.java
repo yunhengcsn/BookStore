@@ -111,17 +111,33 @@ public class UserDao {
      * @Param: [username]
      * @return bookstore.user.domain.User
      **/
-    public User findByUsername(String username) {
-        String sql = "select * from user where username=?";
-        Object[] param = {username};
+    public User findByUsernameAndPassword(String username,String password) {
+        String sql = "select * from user where username=? and password=?";
+        Object[] param = {username,password};
         User user = null;
 
         try {
             user = qr.query(sql,new BeanHandler<>(User.class), param);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("按用户名查询用户失败");
+            throw new RuntimeException("按用户名和密码查询用户失败");
         }
         return user;
+    }
+
+    /*
+     * @Description: change password by uid
+     * @Param: [uid, newpassword]
+     * @return void
+     **/
+    public void changePassword(String uid, String newpassword) {
+        String sql = "update user set password=? where uid=?";
+        Object[] params = {newpassword,uid};
+        try {
+            qr.update(sql,params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("修改密码失败");
+        }
     }
 }

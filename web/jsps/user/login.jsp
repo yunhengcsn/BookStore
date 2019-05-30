@@ -79,7 +79,7 @@
                         <input type="image" id="submit" src="<c:url value='/images/login1.jpg'/>" class="loginBtn"/>
                       </td>
                       <td class="tdError">
-                        <label class="labelError" id="submitError">${errors.submitError}</label>
+                        <label class="labelError" id="submitError">${submitError}</label>
                       </td>
                     </tr>																				
                  </table>
