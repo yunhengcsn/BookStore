@@ -29,7 +29,7 @@
 	</tr>
 	<tr>
 		<td class="tdLeft" rowspan="2">
-			<iframe frameborder="0" src="<c:url value='/jsps/left.jsp'/>" name="left"></iframe>
+			<iframe frameborder="0" src="<c:url value='/CategoryServlet?method=findAll'/>" name="left"></iframe>
 		</td>
 		<td class="tdSearch" style="border-bottom-width: 0px;">
 			<iframe frameborder="0" src="<c:url value='/jsps/search.jsp'/>" name="search"></iframe>
