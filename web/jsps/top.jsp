@@ -37,20 +37,20 @@
   <body>
 	<h1 style="text-align: center;">网上书城</h1>
 	<div style="font-size: 10pt; line-height: 10px;">
-			<c:if test="${empty sessionScope.sessionUser}">
-				<a href="<c:url value='/jsps/user/regist.jsp'/>" target="_parent">新用户注册</a>
-			</c:if>
-			你好，
 			<c:choose>
-				<c:when test="${empty sessionScope.sessionUser}"><a href="<c:url value='/jsps/user/login.jsp'/>" target="_parent">请登录</a></c:when>
-				<c:otherwise>${sessionScope.sessionUser.username}</c:otherwise>
-			</c:choose>
-			<c:if test="${not empty sessionScope.sessionUser}">
-				<a href="<c:url value='/jsps/cart/list.jsp'/>" target="body">我的购物车</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-				<a href="<c:url value='/jsps/order/list.jsp'/>" target="body">我的订单</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-				<a href="<c:url value='/jsps/user/pwd.jsp'/>" target="body">修改密码</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-				<a href="<c:url value='/UserServlet?method=exit'/>" target="_parent">退出</a>
-			</c:if>
+				<c:when test="${empty sessionScope.sessionUser}">
+                    <a href="<c:url value='/jsps/user/login.jsp'/>" target="_parent">请登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="<c:url value='/jsps/user/regist.jsp'/>" target="_parent">新用户注册</a>
+                </c:when>
+
+                <c:otherwise>
+                        你好，${sessionScope.sessionUser.username}
+                <a href="<c:url value='/jsps/cart/list.jsp'/>" target="body">我的购物车</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="<c:url value='/jsps/order/list.jsp'/>" target="body">我的订单</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="<c:url value='/jsps/user/pwd.jsp'/>" target="body">修改密码</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="<c:url value='/UserServlet?method=exit'/>" target="_parent">退出</a>
+                </c:otherwise>
+            </c:choose>
 	</div>
   </body>
 </html>
