@@ -253,7 +253,7 @@ public class UserServlet extends BaseServlet {
         return errors;
     }
 
-   /*
+    /*
     * @Description: user exit
     * @Param: [req, resp]
     * @return java.lang.String
@@ -346,5 +346,22 @@ public class UserServlet extends BaseServlet {
         }
 
         return errors;
+    }
+
+    /*
+     * @Description: ajax check if old password is right when password need to be updated
+     * @Param: [req, resp]
+     * @return java.lang.String
+     **/
+    public String ajaxValidatePassword(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String password = req.getParameter("password");
+
+        User sessionUser = (User)req.getSession().getAttribute("sessionUser");
+        String sessionPassword = sessionUser.getPassword();
+
+        boolean b = password.equals(sessionPassword);
+        resp.getWriter().print(b);
+
+        return null;
     }
 }

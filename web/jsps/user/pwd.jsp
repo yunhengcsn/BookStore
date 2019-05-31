@@ -18,6 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="<c:url value='/css/css.css'/>">
 	<link rel="stylesheet" type="text/css" href="<c:url value='/jsps/css/user/pwd.css'/>">
 	<script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>"></script>
+	  <script type="text/javascript" src="<c:url value="/jsps/js/user/pwd.js"/> "></script>
 	<script src="<c:url value='/js/common.js'/>"></script>
   </head>
   
