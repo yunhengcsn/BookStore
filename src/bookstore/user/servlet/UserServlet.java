@@ -148,7 +148,7 @@ public class UserServlet extends BaseServlet {
     public String ajaxValidateVerifyCode(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String verifyCode = req.getParameter("verifyCode");
         String vcCode = (String)req.getSession().getAttribute("verifyCode");
-        boolean b = verifyCode.equalsIgnoreCase(vcCode);
+        boolean b = verifyCode.equals(vcCode);
         resp.getWriter().print(b);
         return null;
     }
@@ -207,7 +207,7 @@ public class UserServlet extends BaseServlet {
         //登录成功后向session存储用户信息
         req.getSession().setAttribute("sessionUser",user);
 
-        //将用户名保存至cookie
+        //将用户名保存至cookie，使得用户下次登录时不用输入用户名
         String username = user.getUsername();
         username = URLEncoder.encode(username,"utf-8");
         Cookie cookie = new Cookie("username",username);

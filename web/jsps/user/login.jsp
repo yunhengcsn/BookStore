@@ -19,7 +19,19 @@
 	-->
 	<link rel="stylesheet" type="text/css" href="<c:url value='/jsps/css/user/login.css'/>">
 	<script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>"></script>
+      <script type="text/javascript" src="<c:url value='/jsps/js/user/login.js'/>"></script>
 	<script src="<c:url value='/js/common.js'/>"></script>
+
+      <script type="text/javascript">
+          $(function() {/*Map<String(Cookie名称),Cookie(Cookie本身)>*/
+              // 获取cookie中的用户名
+              var username = window.decodeURI("${cookie.username.value}");
+              if("${requestScope.user.username}") {
+                  username = "${requestScope.user.username}";
+              }
+              $("#username").val(username);
+          });
+      </script>
 
   </head>
   
