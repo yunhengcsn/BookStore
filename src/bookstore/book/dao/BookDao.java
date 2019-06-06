@@ -157,4 +157,38 @@ public class BookDao {
 
         return findBooksByCriteria(expressionList,currPage);
     }
+
+    /**
+     * Description: fuzzy search bookList by bname
+     * @param bname
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByBname(String bname, int currPage) {
+        List<Expression> expressionList = new ArrayList<>();
+        expressionList.add(new Expression("bname","like",'%'+bname+'%'));
+
+        return findBooksByCriteria(expressionList,currPage);
+    }
+
+    /**
+     * Description: fuzzy search bookList by combination conditions
+     * @param criteria
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByCombination(Book criteria, int currPage) {
+        List<Expression> expressionList = new ArrayList<>();
+        if(criteria.getBname() != null) {
+            expressionList.add(new Expression("bname","like",'%'+criteria.getBname()+'%'));
+        }
+        if(criteria.getAuthor() != null) {
+            expressionList.add(new Expression("author","like",'%'+criteria.getAuthor()+'%'));
+        }
+        if(criteria.getPress() != null) {
+            expressionList.add(new Expression("press","like",'%'+criteria.getPress()+'%'));
+        }
+
+        return findBooksByCriteria(expressionList,currPage);
+    }
 }

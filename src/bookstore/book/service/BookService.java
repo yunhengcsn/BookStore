@@ -50,4 +50,24 @@ public class BookService {
     public PageBean<Book> findBooksByPress(String press, int currPage) {
         return bookDao.findBooksByPress(press,currPage);
     }
+
+    /**
+     * Description: fuzzy search bookList by bname
+     * @param bname
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByBname(String bname, int currPage) {
+        return  bookDao.findBooksByBname(bname,currPage);
+    }
+
+    /**
+     * Description: fuzzy search bookList by combination conditions
+     * @param criteria
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByCombination(Book criteria, int currPage) {
+        return bookDao.findBooksByCombination(criteria,currPage);
+    }
 }

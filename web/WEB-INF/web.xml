@@ -24,8 +24,8 @@
         <servlet-class>bookstore.book.servlet.BookServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CartServlet</servlet-name>
-        <servlet-class>bookstore.cart.servlet.CartServlet</servlet-class>
+        <servlet-name>CartItemServlet</servlet-name>
+        <servlet-class>bookstore.cartItem.servlet.CartItemServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -49,7 +49,7 @@
         <url-pattern>/BookServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CartServlet</servlet-name>
-        <url-pattern>/CartServlet</url-pattern>
+        <servlet-name>CartItemServlet</servlet-name>
+        <url-pattern>/CartItemServlet</url-pattern>
     </servlet-mapping>
 </web-app>

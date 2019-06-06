@@ -25,6 +25,10 @@
   <body>
 
 <ul>
+    <c:if test="${bookPageBean.totalRecords eq 0}">
+        <br/><br/><br/><br/>
+        <h1 align="center" style="color: #666666">抱歉，没有相关记录</h1>
+    </c:if>
 <c:forEach items="${bookPageBean.beanList}" var="book">
     <li>
         <div class="inner">

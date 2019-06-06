@@ -3,6 +3,7 @@ package bookstore.book.servlet;
 import bookstore.book.domain.Book;
 import bookstore.book.service.BookService;
 import bookstore.paging.PageBean;
+import tools.commons.CommonUtils;
 import tools.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -113,6 +114,42 @@ public class BookServlet extends BaseServlet {
         String press = req.getParameter("press");
 
         PageBean<Book> bookPageBean = bookService.findBooksByPress(press,currPage);
+        bookPageBean.setUrl(url);
+
+        req.setAttribute("bookPageBean",bookPageBean);
+        return "f:/jsps/book/list.jsp";
+    }
+
+    /**
+     * Description: fuzzy search bookList by bname
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String findByBname(HttpServletRequest req, HttpServletResponse resp) {
+        int currPage = getCurrPage(req);
+        String url = getUrl(req);
+        String bname = req.getParameter("bname");
+
+        PageBean<Book> bookPageBean = bookService.findBooksByBname(bname,currPage);
+        bookPageBean.setUrl(url);
+
+        req.setAttribute("bookPageBean",bookPageBean);
+        return "f:/jsps/book/list.jsp";
+    }
+
+    /**
+     * Description: fuzzy search bookList by combination conditions
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String findByCombination(HttpServletRequest req, HttpServletResponse resp) {
+        int currPage = getCurrPage(req);
+        String url = getUrl(req);
+        Book criteria = CommonUtils.toBean(req.getParameterMap(),Book.class);
+
+        PageBean<Book> bookPageBean = bookService.findBooksByCombination(criteria,currPage);
         bookPageBean.setUrl(url);
 
         req.setAttribute("bookPageBean",bookPageBean);
