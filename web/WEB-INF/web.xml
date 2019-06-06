@@ -27,6 +27,10 @@
         <servlet-name>CartItemServlet</servlet-name>
         <servlet-class>bookstore.cartItem.servlet.CartItemServlet</servlet-class>
     </servlet>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>bookstore.filters.LoginFilter</filter-class>
+    </filter>
 
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
@@ -52,4 +56,9 @@
         <servlet-name>CartItemServlet</servlet-name>
         <url-pattern>/CartItemServlet</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/jsps/cart/*</url-pattern>
+        <servlet-name>CartItemServlet</servlet-name>
+    </filter-mapping>
 </web-app>
