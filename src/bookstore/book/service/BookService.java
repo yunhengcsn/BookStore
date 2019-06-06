@@ -21,4 +21,33 @@ public class BookService {
     public PageBean<Book> findBooksByCategory(String cid, int currPage) {
         return bookDao.findBooksByCategory(cid, currPage);
     }
+
+    /**
+     * Description: find book detail by bid
+     * @param bid
+     * @return Book
+     */
+    public Book findByBid(String bid) {
+        return bookDao.findBookByBid(bid);
+    }
+
+    /**
+     * Description: find books by author
+     * @param author
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByAuthor(String author, int currPage) {
+        return bookDao.findBooksByAuthor(author,currPage);
+    }
+
+    /**
+     * Description: find books by press
+     * @param press
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByPress(String press, int currPage) {
+        return bookDao.findBooksByPress(press,currPage);
+    }
 }

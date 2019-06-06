@@ -28,7 +28,7 @@
 <c:forEach items="${bookPageBean.beanList}" var="book">
     <li>
         <div class="inner">
-            <a class="pic" href="<c:url value="BookServlet?method=load&bid=${book.bid}"/>">
+            <a class="pic" href="<c:url value="BookServlet?method=findByBid&bid=${book.bid}"/>">
                 <img src="<c:url value='/${book.image_b}'/>" border="0">
             </a>
             <p class="price">
@@ -37,7 +37,7 @@
                 (<span class="price_s">${book.discount}折</span>)
             </p>
             <p>
-                <a id="bookname" title="${book.bname}" href="<c:url value='/BookServlet?method=load&bid=${book.bid}'/>">
+                <a id="bookname" title="${book.bname}" href="<c:url value='/BookServlet?method=findByBid&bid=${book.bid}'/>">
                     ${book.bname}
                 </a>
             </p>

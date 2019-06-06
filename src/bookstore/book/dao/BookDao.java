@@ -1,17 +1,21 @@
 package bookstore.book.dao;
 
 import bookstore.book.domain.Book;
+import bookstore.category.domain.Category;
 import bookstore.paging.Expression;
 import bookstore.paging.PageBean;
 import bookstore.paging.PageConstants;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import tools.commons.CommonUtils;
 import tools.jdbc.TxQueryRunner;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: dao layer of book
@@ -94,5 +98,63 @@ public class BookDao {
         pageBean.setTotalRecords(totalRecords.intValue());
 
         return pageBean;
+    }
+
+    /**
+     * Description: find book by Bid
+     * @param bid
+     * @return Book
+     */
+    public Book findBookByBid(String bid) {
+        String sql = "select * from book b , category c where b.cid=c.cid and bid=?";
+        Object[] params = {bid};
+        Map<String,Object> map;
+        try {
+            map = qr.query(sql,new MapHandler(),params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("查询图书失败");
+        }
+
+        //查询到的与book相关的列映射为Book对象
+        Book book = CommonUtils.toBean(map,Book.class);
+        //查询到的与category相关的列映射为Category对象
+        Category category = CommonUtils.toBean(map,Category.class);
+        //设置category的parent属性，只放pid
+        if(map.get("pid") != null) {
+            Category p = new Category();
+            p.setCid((String) map.get("pid"));
+            category.setParent(p);
+        }
+
+        //设置book的category属性
+        book.setCategory(category);
+        return book;
+    }
+
+    /**
+     * Description: find books by author
+     * @param author
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByAuthor(String author, int currPage) {
+        List<Expression> expressionList = new ArrayList<>();
+        expressionList.add(new Expression("author","=",author));
+
+        return findBooksByCriteria(expressionList,currPage);
+    }
+
+    /**
+     * Description: find books by press
+     * @param press
+     * @param currPage
+     * @return PageBean<Book>
+     */
+    public PageBean<Book> findBooksByPress(String press, int currPage) {
+        List<Expression> expressionList = new ArrayList<>();
+        expressionList.add(new Expression("press","=",press));
+
+        return findBooksByCriteria(expressionList,currPage);
     }
 }
