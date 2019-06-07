@@ -63,7 +63,7 @@ public class CartItemDao {
 
         }
 
-        qr.update(sql.toString(),cartItemsIdArray);
+        qr.update(sql.toString(),(Object[]) cartItemsIdArray);
     }
 
     /**
@@ -111,7 +111,7 @@ public class CartItemDao {
 
         }
 
-        List<Map<String,Object>> mapList =  qr.query(sql.toString(),new MapListHandler(),cartItemsIdArray);
+        List<Map<String,Object>> mapList =  qr.query(sql.toString(),new MapListHandler(),(Object[])cartItemsIdArray);
 
         return toCartItemList(mapList);
     }
