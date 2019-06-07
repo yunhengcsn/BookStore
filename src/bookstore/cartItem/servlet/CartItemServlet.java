@@ -9,12 +9,13 @@ import tools.servlet.BaseServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 
 /**
- * Description:
+ * Description: web layer of CartItem
  *
  * @author csn
  */
@@ -23,8 +24,8 @@ public class CartItemServlet extends BaseServlet {
 
     /**
      * Description: 向购物车添加条目
-     * @param req
-     * @param resp
+     * @param req HttpServletRequest
+     * @param resp HttpServletResponse
      * @return String
      */
     public String add(HttpServletRequest req, HttpServletResponse resp) {
@@ -45,9 +46,9 @@ public class CartItemServlet extends BaseServlet {
 
     /**
      * Description: 我的购物车，获取用户所有购物车条目
-     * @param req
-     * @param resp
-     * @return
+     * @param req HttpServletRequest
+     * @param resp HttpServletResponse
+     * @return String
      */
     public String myCart(HttpServletRequest req, HttpServletResponse resp) {
         User sessionUser = (User) req.getSession().getAttribute("sessionUser");
@@ -59,4 +60,66 @@ public class CartItemServlet extends BaseServlet {
 
         return "f:/jsps/cart/list.jsp";
     }
+
+    /**
+     * Description: delete cartItems whose id in cartItemIds
+     * @param req HttpServletRequest
+     * @param resp HttpServletResponse
+     * @return String
+     */
+    public String batchDelete(HttpServletRequest req, HttpServletResponse resp) {
+        String cartItemIds = req.getParameter("cartItemIds");
+        String[] cartItemsIdArray = cartItemIds.split(",");
+
+        cartItemService.batchDelete(cartItemsIdArray);
+
+        return myCart(req,resp);
+    }
+
+    /**
+     * Description: update quantity of a cartItemId
+     * @param req HttpServletRequest
+     * @param resp HttpServletResponse
+     * @return String
+     */
+    public String updateQuantity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        String cartItemId = req.getParameter("cartItemId");
+        int quantity = Integer.parseInt(req.getParameter("quantity"));
+
+        CartItem cartItem = cartItemService.updateQuantity(cartItemId,quantity);
+
+        // 给客户端返回一个json对象
+
+        String sb = "{" + "\"quantity\"" + ":" + cartItem.getQuantity() +
+                "," +
+                "\"subTotal\"" + ":" + cartItem.getSubTotal() +
+                "}";
+        resp.getWriter().print(sb);
+
+        return null;
+    }
+
+    /**
+     * Description: 加载cartItems详情
+     * @param req HttpServletRequest
+     * @param resp HttpServletResponse
+     * @return String
+     */
+    public String loadCartItems(HttpServletRequest req, HttpServletResponse resp) {
+        //获取要生成订单的cartItemIds和总金额total
+        String cartItemIds = req.getParameter("cartItemIds");
+        String total = req.getParameter("total");
+
+        String[] cartItemsIdArray = cartItemIds.split(",");
+
+        List<CartItem> cartItems = cartItemService.loadCartItems(cartItemsIdArray);
+
+        req.setAttribute("cartItems",cartItems);
+        req.setAttribute("total",total);
+
+        return "f:/jsps/cart/showitem.jsp";
+
+    }
+
 }

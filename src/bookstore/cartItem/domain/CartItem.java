@@ -3,8 +3,10 @@ package bookstore.cartItem.domain;
 import bookstore.book.domain.Book;
 import bookstore.user.domain.User;
 
+import java.math.BigDecimal;
+
 /**
- * Description:
+ * Description: model of CartItem
  *
  * @author csn
  */
@@ -25,8 +27,12 @@ public class CartItem {
     private Book book;
     private User user;
 
+    //使用BigDecimal去误差
     public double getSubTotal() {
-        return quantity * book.getCurrPrice();
+        BigDecimal q = new BigDecimal(quantity+"");//构造函数入参用String
+        BigDecimal cp = new BigDecimal(book.getCurrPrice()+"");
+
+        return q.multiply(cp).doubleValue();
     }
 
     public String getCartItemId() {
