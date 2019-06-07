@@ -117,6 +117,7 @@ public class CartItemServlet extends BaseServlet {
 
         req.setAttribute("cartItems",cartItems);
         req.setAttribute("total",total);
+        req.setAttribute("cartItemIds",cartItemIds);
 
         return "f:/jsps/cart/showitem.jsp";
 

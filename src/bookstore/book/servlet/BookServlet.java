@@ -85,7 +85,6 @@ public class BookServlet extends BaseServlet {
 
     /**
      * Description: search bookList by author
-     * Note:由于页面get请求编码本就是utf-8，因此暂时去掉encodingFilter配置
      * @param req
      * @param resp
      * @return String

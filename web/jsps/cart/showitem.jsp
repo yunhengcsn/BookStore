@@ -27,7 +27,8 @@
   
   <body>
 	  <form id="form1" action="<c:url value='/OrderServlet'/>" method="post">
-		  <input type="hidden" name="cartItems" value="${cartItems}"/>
+		  <input type="hidden" name="cartItemIds" value="${cartItemIds}"/>
+		  <input type="hidden" name="total" value="${total}"/>
 		  <input type="hidden" name="method" value="generateOrder"/>
 		  <table width="95%" align="center" cellpadding="0" cellspacing="0">
 			  <tr bgcolor="#efeae5">
