@@ -38,7 +38,7 @@ public class BookServlet extends BaseServlet {
         PageBean<Book> bookPageBean = bookService.findBooksByCategory(cid,currPage);
         bookPageBean.setUrl(url);
 
-        req.setAttribute("bookPageBean",bookPageBean);
+        req.setAttribute("pageBean",bookPageBean);
 
         return "f:/jsps/book/list.jsp";
     }
@@ -97,7 +97,7 @@ public class BookServlet extends BaseServlet {
         PageBean<Book> bookPageBean = bookService.findBooksByAuthor(author,currPage);
         bookPageBean.setUrl(url);
 
-        req.setAttribute("bookPageBean",bookPageBean);
+        req.setAttribute("pageBean",bookPageBean);
         return "f:/jsps/book/list.jsp";
     }
 
@@ -115,7 +115,7 @@ public class BookServlet extends BaseServlet {
         PageBean<Book> bookPageBean = bookService.findBooksByPress(press,currPage);
         bookPageBean.setUrl(url);
 
-        req.setAttribute("bookPageBean",bookPageBean);
+        req.setAttribute("pageBean",bookPageBean);
         return "f:/jsps/book/list.jsp";
     }
 
@@ -133,7 +133,7 @@ public class BookServlet extends BaseServlet {
         PageBean<Book> bookPageBean = bookService.findBooksByBname(bname,currPage);
         bookPageBean.setUrl(url);
 
-        req.setAttribute("bookPageBean",bookPageBean);
+        req.setAttribute("pageBean",bookPageBean);
         return "f:/jsps/book/list.jsp";
     }
 
@@ -151,7 +151,7 @@ public class BookServlet extends BaseServlet {
         PageBean<Book> bookPageBean = bookService.findBooksByCombination(criteria,currPage);
         bookPageBean.setUrl(url);
 
-        req.setAttribute("bookPageBean",bookPageBean);
+        req.setAttribute("pageBean",bookPageBean);
         return "f:/jsps/book/list.jsp";
     }
 

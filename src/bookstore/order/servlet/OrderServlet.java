@@ -5,6 +5,7 @@ import bookstore.cartItem.service.CartItemService;
 import bookstore.order.domain.Order;
 import bookstore.order.domain.OrderItem;
 import bookstore.order.service.OrderService;
+import bookstore.paging.PageBean;
 import bookstore.user.domain.User;
 import tools.commons.CommonUtils;
 import tools.servlet.BaseServlet;
@@ -83,5 +84,66 @@ public class OrderServlet extends BaseServlet {
         req.setAttribute("order",order);
 
         return "f:/jsps/order/ordersucc.jsp";
+    }
+
+    /**
+     * Description: 我的订单
+     * @param req
+     * @param resp
+     * @return
+     */
+    public String myOrders(HttpServletRequest req, HttpServletResponse resp) {
+        int currPage = getCurrPage(req);
+        String url = getUrl(req);
+
+        User owner = (User)req.getSession().getAttribute("sessionUser");
+
+        PageBean<Order> ordersPageBean = orderService.findByUid(currPage,owner.getUid());
+
+        ordersPageBean.setUrl(url);
+        req.setAttribute("pageBean",ordersPageBean);
+
+        return "f:/jsps/order/list.jsp";
+    }
+
+    /**
+     * Description: 去除url的currPage参数
+     * @param req
+     * @return String
+     */
+    private String getUrl(HttpServletRequest req) {
+        String url = req.getRequestURI() + "?" + req.getQueryString();
+
+        int id = url.lastIndexOf("&currPage=");
+        if(id != -1) url = url.substring(0,id);
+        return url;
+    }
+
+    /**
+     * Description: get currPage from req
+     * @param req
+     * @return int
+     */
+    private int getCurrPage(HttpServletRequest req) {
+        String currPage = req.getParameter("currPage");
+
+        //req中没有参数则为1，有则转换为int
+        if(currPage == null || currPage.trim().isEmpty()) return 1;
+        else return Integer.parseInt(currPage);
+    }
+
+    /**
+     * Description: query Order by oid
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String load(HttpServletRequest req, HttpServletResponse resp) {
+        String oid = req.getParameter("oid");
+
+        Order order = orderService.loadOrder(oid);
+
+        req.setAttribute("order",order);
+        return "f:/jsps/order/desc.jsp";
     }
 }

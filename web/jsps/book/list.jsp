@@ -25,48 +25,48 @@
   <body>
 
 <ul>
-    <c:if test="${bookPageBean.totalRecords eq 0}">
+    <c:if test="${pageBean.totalRecords eq 0}">
         <br/><br/><br/><br/>
         <h1 align="center" style="color: #666666">抱歉，没有相关记录</h1>
     </c:if>
-<c:forEach items="${bookPageBean.beanList}" var="book">
-    <li>
-        <div class="inner">
-            <a class="pic" href="<c:url value="BookServlet?method=findByBid&bid=${book.bid}"/>">
-                <img src="<c:url value='/${book.image_b}'/>" border="0">
-            </a>
-            <p class="price">
-                <span class="price_n">&yen;${book.currPrice}</span>
-                <span class="price_r">&yen;${book.price}</span>
-                (<span class="price_s">${book.discount}折</span>)
-            </p>
-            <p>
-                <a id="bookname" title="${book.bname}" href="<c:url value='/BookServlet?method=findByBid&bid=${book.bid}'/>">
-                    ${book.bname}
+    <c:forEach items="${pageBean.beanList}" var="book">
+        <li>
+            <div class="inner">
+                <a class="pic" href="<c:url value="BookServlet?method=findByBid&bid=${book.bid}"/>">
+                    <img src="<c:url value='/${book.image_b}'/>" border="0">
                 </a>
-            </p>
+                <p class="price">
+                    <span class="price_n">&yen;${book.currPrice}</span>
+                    <span class="price_r">&yen;${book.price}</span>
+                    (<span class="price_s">${book.discount}折</span>)
+                </p>
+                <p>
+                    <a id="bookname" title="${book.bname}" href="<c:url value='/BookServlet?method=findByBid&bid=${book.bid}'/>">
+                        ${book.bname}
+                    </a>
+                </p>
 
-            <c:url value="/BookServlet" var="authorUrl">
-                <c:param name="method" value="findByAuthor"/>
-                <c:param name="author" value="${book.author}"/>
-            </c:url>
-            <c:url value="/BookServlet" var="pressUrl">
-                <c:param name="method" value="findByPress"/>
-                <c:param name="press" value="${book.press}"/>
-            </c:url>
+                <c:url value="/BookServlet" var="authorUrl">
+                    <c:param name="method" value="findByAuthor"/>
+                    <c:param name="author" value="${book.author}"/>
+                </c:url>
+                <c:url value="/BookServlet" var="pressUrl">
+                    <c:param name="method" value="findByPress"/>
+                    <c:param name="press" value="${book.press}"/>
+                </c:url>
 
-            <p>
-                <a href="${authorUrl}" name="P_zz" title="${book.author}">
-                    ${book.author}
-                </a>
-            </p>
-            <p class="publishing">
-                <span>出 版 社：</span><a href="${pressUrl}">${book.press}</a>
-            </p>
-            <p class="publishing_time"><span>出版时间：</span>${book.publishtime}</p>
-        </div>
-    </li>
-</c:forEach>
+                <p>
+                    <a href="${authorUrl}" name="P_zz" title="${book.author}">
+                        ${book.author}
+                    </a>
+                </p>
+                <p class="publishing">
+                    <span>出 版 社：</span><a href="${pressUrl}">${book.press}</a>
+                </p>
+                <p class="publishing_time"><span>出版时间：</span>${book.publishtime}</p>
+            </div>
+        </li>
+    </c:forEach>
 </ul>
 
 

@@ -2,6 +2,7 @@ package bookstore.order.service;
 
 import bookstore.order.dao.OrderDao;
 import bookstore.order.domain.Order;
+import bookstore.paging.PageBean;
 import tools.jdbc.JdbcUtils;
 
 import java.sql.SQLException;
@@ -32,4 +33,36 @@ public class OrderService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Description: 分页 根据uid查找Order列表
+     * @param currPage
+     * @param uid
+     * @return PageBean<Order>
+     */
+    public PageBean<Order> findByUid(int currPage, String uid) {
+        PageBean<Order> orderPageBean = new PageBean<>();
+        try {
+            orderPageBean = orderDao.findByUid(currPage,uid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  orderPageBean;
+    }
+
+    /**
+     * Description: query Order by oid
+     * @param oid
+     * @return Order
+     */
+    public Order loadOrder(String oid) {
+        Order order = new Order();
+        try {
+            order = orderDao.findByOid(oid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return order;
+    }
+
 }

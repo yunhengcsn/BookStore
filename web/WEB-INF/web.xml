@@ -63,7 +63,9 @@
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/jsps/cart/*</url-pattern>
+        <url-pattern>/jsps/oeder/*</url-pattern>
         <servlet-name>CartItemServlet</servlet-name>
+        <servlet-name>OrderServlet</servlet-name>
     </filter-mapping>
     <servlet-mapping>
         <servlet-name>OrderServlet</servlet-name>
