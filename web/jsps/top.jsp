@@ -51,6 +51,12 @@
                 <a href="<c:url value='/UserServlet?method=exit'/>" target="_parent">退出</a>
                 </c:otherwise>
             </c:choose>
+            <span align="right" style="font-size: 10pt; line-height: 10px;">
+                <c:if test="${empty sessionScope.sessionAdmin}">
+                    <a href="<c:url value="/adminjsps/login.jsp"/>" target="_parent">管理员登录</a>
+                </c:if>
+            </span>
 	</div>
+
   </body>
 </html>
