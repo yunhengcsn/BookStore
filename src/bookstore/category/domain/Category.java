@@ -7,6 +7,15 @@ import java.util.List;
  * @BelongsPackage: bookstore.category.domain
  * @Author: csn
  * @Description: Category
+ * +---------+--------------+------+-----+---------+----------------+
+ * | Field   | Type         | Null | Key | Default | Extra          |
+ * +---------+--------------+------+-----+---------+----------------+
+ * | cid     | char(32)     | NO   | PRI | NULL    |                |
+ * | cname   | varchar(50)  | YES  | UNI | NULL    |                |
+ * | pid     | char(32)     | YES  | MUL | NULL    |                |
+ * | desc    | varchar(100) | YES  |     | NULL    |                |
+ * | orderBy | int(11)      | NO   | MUL | NULL    | auto_increment |
+ * +---------+--------------+------+-----+---------+----------------+
  */
 public class Category {
     private String cid;

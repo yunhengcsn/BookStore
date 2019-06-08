@@ -43,6 +43,10 @@
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>bookstore.admin.admin.servlet.AdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminCategoryServlet</servlet-name>
+        <servlet-class>bookstore.admin.category.sevlet.AdminCategoryServlet</servlet-class>
+    </servlet>
 
 
 
@@ -89,5 +93,9 @@
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/AdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminCategoryServlet</servlet-name>
+        <url-pattern>/admin/AdminCategoryServlet</url-pattern>
     </servlet-mapping>
 </web-app>

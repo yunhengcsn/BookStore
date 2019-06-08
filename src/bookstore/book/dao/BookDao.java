@@ -191,4 +191,17 @@ public class BookDao {
 
         return findBooksByCriteria(expressionList,currPage);
     }
+
+    /**
+     * count books under a given category
+     * @param cid
+     * @return int
+     * @throws SQLException
+     */
+    public int countBooksByCid(String cid) throws SQLException {
+        String sql = "select count(*) from book where cid=?";
+
+        Number num =  (Number)qr.query(sql,new ScalarHandler(),cid);
+        return num.intValue();
+    }
 }

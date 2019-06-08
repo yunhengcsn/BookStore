@@ -1,6 +1,8 @@
 package bookstore.category.dao;
 
 import bookstore.category.domain.Category;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import tools.commons.CommonUtils;
 import tools.jdbc.TxQueryRunner;
@@ -88,4 +90,92 @@ public class CategoryDao {
         return toCategoryList(mapList);
     }
 
+    /**
+     * add category
+     * @param category
+     * @throws SQLException
+     */
+    public void addCategory(Category category) throws SQLException {
+        StringBuilder sql = new StringBuilder("insert into category (cid,cname,`desc`") ;
+                //"pid) values(?,?,?,?)";
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(category.getCid());
+        params.add(category.getCname());
+        params.add(category.getDesc());
+
+        String sql2;
+        if(category.getParent() != null) {
+            params.add(category.getParent().getCid());//已有pid
+            sql2 = ",pid) values (?,?,?,?)";
+        } else {
+            sql2 = ") values (?,?,?)";
+        }
+
+        qr.update(sql.append(sql2).toString(),params.toArray());
+    }
+
+    /**
+     * find categories whose pid is null
+     * @return List<Category>
+     */
+    public List<Category> findAllParents() throws SQLException {
+        String sql = "select * from category where pid is null";
+
+        return qr.query(sql,new BeanListHandler<>(Category.class));
+    }
+
+    /**
+     * find category by cid
+     * @param cid
+     * @return
+     * @throws SQLException
+     */
+    public Category findByCid(String cid) throws SQLException {
+        String sql;
+        Category category;
+        //search category
+        sql = "select * from category where cid=?";
+
+        //查出的数据缺少parent属性
+        Map<String,Object> map = qr.query(sql,new MapHandler(),cid);
+        category = toCategory(map);
+
+        //一级分类设置children属性
+        if(category.getParent() == null) {
+            List<Category> children = findChildren(category.getCid());
+            category.setChildren(children);
+        }
+
+
+        return category;
+    }
+
+    /**
+     * update category
+     * @param category
+     * @throws SQLException
+     */
+    public void editCategory(Category category) throws SQLException {
+        StringBuilder sql = new StringBuilder("update category set cname=? , `desc`=? ");
+                //, pid=? where cid=?";
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(category.getCname());
+        params.add(category.getDesc());
+
+        String sql2;
+        if(category.getParent() != null) {
+            params.add(category.getParent().getCid());//已有pid
+            sql2 = ", pid=? where cid=?";
+        } else {
+            sql2 = "where cid=?";
+        }
+        params.add(category.getCid());
+
+        qr.update(sql.append(sql2).toString(),params.toArray());
+    }
+
+    public void deleteCategory(String cid) throws SQLException {
+        String sql = "delete from category where cid=?";
+        qr.update(sql,cid);
+    }
 }
