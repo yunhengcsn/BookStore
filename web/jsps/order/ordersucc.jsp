@@ -33,7 +33,7 @@
 		<dd>${order.address} </dd>
 	</dl>
 	<span>书城感谢您的支持，祝您购物愉快！</span>
-	<a href="<c:url value='/jsps/order/pay.jsp'/>" id="linkPay">支付</a>
+	<a href="<c:url value='//OrderServlet?method=prePay&oid=${order.oid}'/>" id="linkPay">支付</a>
 </div>
   </body>
 </html>

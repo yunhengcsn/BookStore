@@ -65,11 +65,11 @@
 					<td>
 						<a href="<c:url value='/OrderServlet?method=load&oid=${order.oid}'/>">查看</a><br/>
 						<c:if test="${order.status eq 1}">
-							<a href="<c:url value='/jsps/order/desc.jsp'/>">支付</a><br/>
-							<a href="<c:url value='/jsps/order/desc.jsp'/>">取消</a><br/>
+							<a href="<c:url value='/OrderServlet?method=prePay&oid=${order.oid}'/>">支付</a><br/>
+							<a href="<c:url value='/OrderServlet?method=load&oid=${order.oid}&btn=cancel'/>">取消</a><br/>
 						</c:if>
 						<c:if test="${order.status eq 3}">
-							<a href="<c:url value='/jsps/order/desc.jsp'/>">确认收货</a><br/>
+							<a href="<c:url value='/OrderServlet?method=load&oid=${order.oid}&btn=confirm'/>">确认收货</a><br/>
 						</c:if>
 					</td>
 				</tr>

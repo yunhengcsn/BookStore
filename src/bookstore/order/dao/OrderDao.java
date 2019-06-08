@@ -178,4 +178,27 @@ public class OrderDao {
         order.setOrderItems(loadOrderItem(order));
         return order;
     }
+
+    /**
+     * Description: find order by oid
+     * @param oid
+     * @return int
+     */
+    public int findStatusByOid(String oid) throws SQLException {
+        String sql = "select status from orders where oid=?";
+
+        return (int)qr.query(sql,new ScalarHandler(),oid);
+    }
+
+    /**
+     * Description: set new status of oid
+     * @param oid
+     * @param status
+     */
+    public void updateStatus(String oid, int status) throws SQLException {
+        String sql = "update orders set status=? where oid=?";
+        Object[] params = {status,oid};
+
+        qr.update(sql,params);
+    }
 }

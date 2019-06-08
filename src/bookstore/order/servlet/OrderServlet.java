@@ -133,17 +133,96 @@ public class OrderServlet extends BaseServlet {
     }
 
     /**
-     * Description: query Order by oid
+     * Description: query Order by oid, set btn，查看订单
      * @param req
      * @param resp
      * @return String
      */
     public String load(HttpServletRequest req, HttpServletResponse resp) {
         String oid = req.getParameter("oid");
+        String btn = req.getParameter("btn");
 
         Order order = orderService.loadOrder(oid);
 
         req.setAttribute("order",order);
+        req.setAttribute("btn",btn);
         return "f:/jsps/order/desc.jsp";
     }
+
+    /**
+     * Description: prepare payment
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String prePay(HttpServletRequest req, HttpServletResponse resp) {
+        String oid = req.getParameter("oid");
+
+        Order order = orderService.loadOrder(oid);
+        req.setAttribute("order",order);
+        return "f:/jsps/order/pay.jsp";
+    }
+
+    /**
+     * Description: fake payment，1->3,ignore 准备发货
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String pay(HttpServletRequest req, HttpServletResponse resp) {
+        String oid = req.getParameter("oid");
+
+        //更新status为等待确认
+        orderService.updateStatus(oid,3);
+        //支付成功并转发请求
+        req.setAttribute("code","success");
+        req.setAttribute("msg","订单支付成功！");
+        return "f:/jsps/msg.jsp";
+    }
+
+
+    /**
+     * Description: cancel order when status eq 1 ,1->5
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String cancel(HttpServletRequest req, HttpServletResponse resp) {
+        String oid = req.getParameter("oid");
+        int status = orderService.findStatusByOid(oid);
+        //校验订单状态
+        if(status != 1) {
+            req.setAttribute("code","error");
+            req.setAttribute("msg","不能取消该订单");
+            return "f:/jsps/msg.jsp";
+        }
+        //更新
+        orderService.updateStatus(oid,5);
+        req.setAttribute("code","success");
+        req.setAttribute("msg","订单取消成功");
+        return "f:/jsps/msg.jsp";
+    }
+
+    /**
+     * Description: confirm order when status eq 3, 3->4
+     * @param req
+     * @param resp
+     * @return String
+     */
+    public String confirm(HttpServletRequest req, HttpServletResponse resp) {
+        String oid = req.getParameter("oid");
+        int status = orderService.findStatusByOid(oid);
+        //校验订单状态
+        if(status != 3) {
+            req.setAttribute("code","error");
+            req.setAttribute("msg","不能确认该订单");
+            return "s:/jsps/msg.jsp";
+        }
+        //更新
+        orderService.updateStatus(oid,4);
+        req.setAttribute("code","success");
+        req.setAttribute("msg","交易成功");
+        return "f:/jsps/msg.jsp";
+    }
+
 }

@@ -34,8 +34,8 @@
 	<div class="divContent">
 		<div class="div2">
 			<dl>
-				<dt>收货人信息:&nbsp;&nbsp;${order.address}</dt>
-				<dd></dd>
+				<dt>收货人信息:</dt>
+				<dd>${order.address}</dd>
 			</dl>
 		</div>
 		<div class="div2">
@@ -77,11 +77,14 @@
 			<span style="font-weight: 900; font-size: 15px;">合计金额：</span>
 			<span class="price_t">&yen;${order.total}</span><br/>
 			<c:if test="${order.status eq 1}">
-				<a href="<c:url value='/jsps/order/pay.jsp'/>" class="pay">支付订单</a><br/>
-				<a id="cancel" href="javascript:alert('订单已取消！');">取消订单</a><br/>
+				<a href="<c:url value='/OrderServlet?method=prePay&oid=${order.oid}'/>" class="pay">支付订单</a><br/>
+			</c:if>
+			<c:if test="${order.status eq 1 and btn eq 'cancel'}">
+				取消订单
+				<a id="cancel" href="<c:url value='/OrderServlet?method=cancel&oid=${order.oid}'/>">取消订单</a><br/>
 			</c:if>
 			<c:if test="${order.status eq 3}">
-				<a id="confirm" href="javascript:alert('交易成功！');">确认收货</a><br/>
+				<a id="confirm" href="<c:url value='/OrderServlet?method=confirm&oid=${order.oid}'/>">确认收货</a><br/>
 			</c:if>
 		</div>
 	</div>

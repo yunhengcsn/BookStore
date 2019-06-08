@@ -35,7 +35,7 @@ public class OrderService {
     }
 
     /**
-     * Description: 分页 根据uid查找Order列表
+     * Description: 分页 根据uid查找Order列表，多个操作 放入事务
      * @param currPage
      * @param uid
      * @return PageBean<Order>
@@ -43,26 +43,67 @@ public class OrderService {
     public PageBean<Order> findByUid(int currPage, String uid) {
         PageBean<Order> orderPageBean = new PageBean<>();
         try {
+            JdbcUtils.beginTransaction();
             orderPageBean = orderDao.findByUid(currPage,uid);
+            JdbcUtils.commitTransaction();
         } catch (SQLException e) {
+            try {
+                JdbcUtils.rollbackTransaction();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
         }
         return  orderPageBean;
     }
 
     /**
-     * Description: query Order by oid
+     * Description: query Order by oid，多个操作 放入事务
      * @param oid
      * @return Order
      */
     public Order loadOrder(String oid) {
         Order order = new Order();
         try {
+            JdbcUtils.beginTransaction();
             order = orderDao.findByOid(oid);
+            JdbcUtils.commitTransaction();
         } catch (SQLException e) {
+            try {
+                JdbcUtils.rollbackTransaction();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
         }
         return order;
     }
 
+    /**
+     * Description: find status by oid
+     * @param oid
+     * @return int
+     */
+    public int findStatusByOid(String oid) {
+        int status = -1;
+        try {
+            status = orderDao.findStatusByOid(oid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    /**
+     * Description: update status
+     * @param oid
+     * @param status
+     */
+    public void updateStatus(String oid, int status) {
+        try {
+            orderDao.updateStatus(oid,status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
