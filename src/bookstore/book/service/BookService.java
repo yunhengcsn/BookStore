@@ -4,6 +4,8 @@ import bookstore.book.dao.BookDao;
 import bookstore.book.domain.Book;
 import bookstore.paging.PageBean;
 
+import java.sql.SQLException;
+
 
 /**
  * Description: service layer of book
@@ -69,5 +71,29 @@ public class BookService {
      */
     public PageBean<Book> findBooksByCombination(Book criteria, int currPage) {
         return bookDao.findBooksByCombination(criteria,currPage);
+    }
+
+    /**
+     * delete book by bid
+     * @param bid
+     */
+    public void deleteBook(String bid) {
+        try {
+            bookDao.deleteBook(bid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * edit book
+     * @param book
+     */
+    public void editBook(Book book) {
+        try {
+            bookDao.editBook(book);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

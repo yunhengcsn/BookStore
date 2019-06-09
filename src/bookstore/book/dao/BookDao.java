@@ -204,4 +204,79 @@ public class BookDao {
         Number num =  (Number)qr.query(sql,new ScalarHandler(),cid);
         return num.intValue();
     }
+
+    /**
+     * delete book
+     * @param bid
+     * @throws SQLException
+     */
+    public void deleteBook(String bid) throws SQLException {
+        String sql = "delete from book where bid=?";
+        qr.update(sql,bid);
+    }
+
+    /**
+     * edit book
+     * @param book
+     * @throws SQLException
+     */
+    public void editBook(Book book) throws SQLException {
+        StringBuilder sql = new StringBuilder("update book set bname=?, currPrice=?, price=?, discount=?,author=?,press=?,cid=? ");
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(book.getBname());
+        params.add(book.getCurrPrice());
+        params.add(book.getPrice());
+        params.add(book.getDiscount());
+        params.add(book.getAuthor());
+        params.add(book.getPress());
+        params.add(book.getCategory().getCid());
+        /*
+        <tr>
+				<td colspan="3">出版时间：<input id="publishtime" type="text" name="publishtime" value="${book.publishtime}" style="width:100px;"/></td>
+			</tr>
+			<tr>
+				<td>版次：　　<input id="edition" type="text" name="edition" value="${book.edition}" style="width:40px;"/></td>
+				<td>页数：　　<input id="pageNum" type="text" name="pageNum" value="${book.pageNum}" style="width:50px;"/></td>
+				<td>字数：　　<input id="wordNum" type="text" name="wordNum" value="${book.wordNum}" style="width:80px;"/></td>
+			</tr>
+			<tr>
+				<td width="250px">印刷时间：<input id="printtime" type="text" name="printtime" value="${book.printtime}" style="width:100px;"/></td>
+				<td width="250px">开本：　　<input id="booksize" type="text" name="booksize" value="${book.booksize}" style="width:30px;"/></td>
+				<td>纸张：　　<input id="paper" type="text" name="paper" value="${book.paper}" style="width:80px;"/></td>
+			</tr>
+         */
+        if(book.getPublishtime() != null) {
+            sql.append(",publishtime=? ");
+            params.add(book.getPublishtime());
+        }
+        if((Integer)book.getEdition() != null) {
+            sql.append(",edition=? ");
+            params.add(book.getEdition());
+        }
+        if((Integer)book.getPageNum() != null) {
+            sql.append(",pageNum=? ");
+            params.add(book.getPageNum());
+        }
+        if((Integer)book.getWordNum() != null) {
+            sql.append(",wordNum=? ");
+            params.add(book.getWordNum());
+        }
+        if(book.getPrinttime() != null) {
+            sql.append(",printtime=? ");
+            params.add(book.getPrinttime());
+        }
+        if((Integer)book.getBooksize() != null) {
+            sql.append(",booksize=? ");
+            params.add(book.getBooksize());
+        }
+        if(book.getPaper() != null) {
+            sql.append(",paper=? ");
+            params.add(book.getPaper());
+        }
+
+        sql.append("where bid=?");
+        params.add(book.getBid());
+
+        qr.update(sql.toString(),params.toArray());
+    }
 }
