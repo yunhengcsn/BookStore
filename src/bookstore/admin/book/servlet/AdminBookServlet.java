@@ -5,6 +5,10 @@ import bookstore.book.service.BookService;
 import bookstore.category.domain.Category;
 import bookstore.category.service.CategoryService;
 import bookstore.paging.PageBean;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import tools.commons.CommonUtils;
 import tools.servlet.BaseServlet;
@@ -241,6 +245,12 @@ public class AdminBookServlet extends BaseServlet {
 
     }
 
+    /**
+     * 高级搜索
+     * @param req
+     * @param resp
+     * @return
+     */
     public String findByCriteria(HttpServletRequest req, HttpServletResponse resp) {
         Book criteria = CommonUtils.toBean(req.getParameterMap(),Book.class);
         int currPage = getCurrPage(req);
@@ -252,6 +262,40 @@ public class AdminBookServlet extends BaseServlet {
         req.setAttribute("pageBean",bookPageBean);
         return "f:/adminjsps/admin/book/list.jsp";
     }
-    //addBook
 
+    /**
+     * 添加图书
+     * @param req
+     * @param resp
+     * @return
+     */
+    public String addBook(HttpServletRequest req, HttpServletResponse resp){
+        //创建工厂
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        //创建解析器
+        ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
+        servletFileUpload.setFileSizeMax(80 * 1024);
+        //解析request
+        List<FileItem> fileItemList = null;
+        try {
+            fileItemList = servletFileUpload.parseRequest(req);
+        } catch (FileUploadException e) {
+            e.printStackTrace();
+            return showError(req,resp,"上传的文件超出了80KB");
+        }
+
+        /*
+        解析请求，提取数据
+         */
+
+        req.setAttribute("code","success");
+        req.setAttribute("msg","添加图书成功");
+        return "f:/adminjsps/msg.jsp";
+    }
+
+    private String showError(HttpServletRequest req, HttpServletResponse resp, String msg) {
+        req.setAttribute("code","error");
+        req.setAttribute("msg",msg);
+        return "f:/adminjsps/msg.jsp";
+    }
 }
